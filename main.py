@@ -1,15 +1,15 @@
 import random
 
 from lib.core import Color
+from lib.grid import Grid
+
+# génération de la grille
+def generate_grid(x, y):
+    grid = Grid(x, y)
+    grid.fill()
+
+    print(grid)
 
 
-def generate_grid(size):
-    colors = Color.all()
-    grid = []
-    for i in range(size):
-        l = []
-        for j in range(size):
-            l.append(random.choice(colors))
-        grid.append(l)
-    return grid
+generate_grid(10, 10)
 
