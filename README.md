@@ -1,4 +1,4 @@
-# CandyCrush
+# CandyCrush (Mathéo Daumas, Oscar Brun, Quentin Prost-Tournier)
  
 [**Sujet du TD**](https://moodle.insa-lyon.fr/pluginfile.php/359009/mod_resource/content/2/Mini_projet_ISN2_v3.pdf)
 
@@ -70,40 +70,40 @@ def test_detecte_coordonnees_combinaison():
 
 ### Fonctions annexes
 
-Génération de la grille
+Génération de la grille avec des bonbons aléatoires
 
 ```python
-def generer_grille(x, y):
+def generate_grid(size):
     """
-    Génère une grille de dimensions x*y, puis la remplie avec des bonbons aléatoires
-    """
-```
-
-Remplissage de la grille avec des bonbons aléatoires
-
-```python
-def remplir_grille(grille):
-    """
-    Rempli la grille avec des bonbons aléatoires
+    Cette fonction génère une grille de dimensions size x size et la remplit de bonbons de couleur aléatoire
+    Inputs :
+    size (int) : Taille de la grille
+    Returns :
+    grid (list) : Grille de dimension size x size remplie de bonbons de couleur aléatoire
     """
 ```
 
 Affichage de la grille
 
 ```python
-def affichage_grille(grille, nb_type_bonbons):  # voir les fonctions imposées
+def show_grid(grid, nb_type_bonbons):  # voir les fonctions imposées
     """
-    Affiche la grille de jeu "grille" contenant au
-    maximum "nb_type_bonbons" couleurs de bonbons différentes.
+    Cette fonction affiche la grille de jeu "grille" contenant au maximum "nb_type_bonbons" couleurs de bonbons différentes
+    Inputs :
+    grid (list) : Grille de dimension size x size remplie de bonbons de couleur aléatoire
+    nb_type_bonbons (int) : Nombre de types de bonbons de couleurs différentes
     """
 ```
 
-Demande du nombre maximal de coups et du score à atteindre
+Demander les coordonnées
 
 ```python
-def demander_parametres():
+def ask_coordinates():
     """
-    Demande le nombre maximal de coups et le score à atteindre
+    Cette fonction demande à l'utilisateur les coordonnées x et y du bonbon qu'il souhaite sélectionner
+    Returns :
+    x (int) : Coordonnée x du bonbon
+    y (int) : Coordonnée y du bonbon
     """
 ```
 
@@ -129,15 +129,14 @@ def coup_joueur(grille):
 Echange de deux bonbons
 
 ```python
-def echange_bonbons(grille, candy1, candy2):
+def swap(grid, candy1, candy2):
     """
-    Echange les bonbons en arguments dans la grille
-    """
-
-    """
-    associe chaque bonbon aux coordonnées de l'autre
-    """
-    
+    Cette fonction échange les 2 bonbons adjacents sélectionnés par l'utilisateur
+    Inputs :
+    grid (list) : Grille de dimension size x size remplie de bonbons
+    candy1 (list) : Coordonnées x et y du bonbon 1
+    candy2 (list) : Coordonnées x et y du bonbon 2
+    """  
 ```
 
 mise en surbrillance d'un bonbon
