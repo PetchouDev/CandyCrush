@@ -48,9 +48,9 @@ def test_detecte_coordonnees_combinaison():
     - Génération d'une grille de la taille souhaitée
     - Remplissage de la grille avec des bonbons aléatoires
     - Affichage de la grille
-    - Demande du nombre maximal de coups et du score à atteindre
 
 2. Boucle de jeu
+    - Tant qu'il y a des combinaisons possibles :
     - Demande les coordonnées d'un bonbon
     - l'affiche en surbrillance
     - Demande les coordonnées d'un second bonbon
