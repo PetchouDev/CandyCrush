@@ -48,13 +48,15 @@ def test_detecte_coordonnees_combinaison():
     - Génération d'une grille de la taille souhaitée
     - Remplissage de la grille avec des bonbons aléatoires
     - Affichage de la grille
-    - Demande du nombre maximal de coups et du score à atteindre
+
 
 2. Boucle de jeu
     - Demande les coordonnées d'un bonbon
     - l'affiche en surbrillance
     - Demande les coordonnées d'un second bonbon
     - Si le second est adjacent au premier, les échange, sinon, le second mis en surbrillance, et le premier revient à sa couleur d'origine. Si le second est le même que le premier, on revient à l'étape 2.
+
+     Si aucune combinaison n'est formée, on remet les bonbons à leur place d'origine, et on revient à l'étape 2.
 
     Après un échange:
     - Si une combinaison est formée, on supprime les bonbons de la combinaison
@@ -64,8 +66,7 @@ def test_detecte_coordonnees_combinaison():
     - On décrémente le nombre de coups restants
 
 3. Fin de la partie
-    - Si le nombre de coups est épuisé, on affiche un message de défaite
-    - Si le score est atteint, on affiche un message de victoire
+    - si aucun coup ne permet une combinaison, la partie est finie
 
 ### Fonctions annexes
 
@@ -128,18 +129,23 @@ def coup_joueur(grille):
 Echange de deux bonbons
 
 ```python
-def echange_bonbons(grille, i1, j1, i2, j2):
+def echange_bonbons(grille, candy1, candy2):
     """
-    Echange les bonbons aux coordonnées (i1, j1) et (i2, j2)
+    Echange les bonbons en arguments dans la grille
     """
+
+    """
+    associe chaque bonbon aux coordonnées de l'autre
+    """
+    
 ```
 
 mise en surbrillance d'un bonbon
 
 ```python
-def surbrillance_bonbon(grille, i, j):
+def surbrillance_bonbon(grille, candy):
     """
-    Met en surbrillance le bonbon aux coordonnées (i, j)
+    Met en surbrillance le bonbon en appliquant un arrière plan différent
     """
 ```
 
@@ -150,6 +156,10 @@ def supprimer_bonbons(grille, combinaison):
     """
     Supprime les bonbons de la combinaison
     """
+    """
+    parcours la grille par voisinage
+    Si le bonbon est de la même couleur que le bonbon de départ et n'est pas déjà dans la liste, on l'ajoute
+    """
 ```
 
 Application de la gravité
@@ -159,6 +169,9 @@ def appliquer_gravite(grille):
     """
     Applique la gravité à la grille
     """
+    """
+    Si il y a un trou, on décale les bonbons au dessus vers le bas
+    """
 ```
 
 Verification de la fin de la partie
@@ -167,6 +180,10 @@ Verification de la fin de la partie
 def fin_partie(grille, nb_coups, score):
     """
     Vérifie si la partie est finie
+    """
+
+    """
+    Pour chaque bonbon, on regarde si un déplacement permet un échange
     """
 ```
 
