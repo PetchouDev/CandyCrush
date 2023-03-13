@@ -1,4 +1,4 @@
-# CandyCrush
+# CandyCrush (Mathéo Daumas, Oscar Brun, Quentin Prost-Tournier)
  
 [**Sujet du TD**](https://moodle.insa-lyon.fr/pluginfile.php/359009/mod_resource/content/2/Mini_projet_ISN2_v3.pdf)
 
