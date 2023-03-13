@@ -8,5 +8,7 @@ class Color:
     
     end = '\033[0m'
 
+    white_bg = '\033[107m'
+
     def all(self):
         return [self.blue, self.green, self.yellow, self.red, self.purple, self.cyan]
