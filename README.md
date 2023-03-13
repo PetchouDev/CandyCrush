@@ -78,7 +78,7 @@ def generate_grid(size):
     Cette fonction génère une grille de dimensions size x size et la remplit de bonbons de couleur aléatoire
     Inputs :
     size (int) : Taille de la grille
-    Return :
+    Returns :
     grid (list) : Grille de dimension size x size remplie de bonbons de couleur aléatoire
     """
 ```
@@ -101,7 +101,7 @@ Demander les coordonnées
 def ask_coordinates():
     """
     Cette fonction demande à l'utilisateur les coordonnées x et y du bonbon qu'il souhaite sélectionner
-    Return :
+    Returns :
     x (int) : Coordonnée x du bonbon
     y (int) : Coordonnée y du bonbon
     """
@@ -132,7 +132,7 @@ Echange de deux bonbons
 def swap(grid, candy1, candy2):
     """
     Cette fonction échange les 2 bonbons adjacents sélectionnés par l'utilisateur
-    Input :
+    Inputs :
     grid (list) : Grille de dimension size x size remplie de bonbons
     candy1 (list) : Coordonnées x et y du bonbon 1
     candy2 (list) : Coordonnées x et y du bonbon 2
