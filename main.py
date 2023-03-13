@@ -13,3 +13,9 @@ def generate_grid(size):
         grid.append(l)
     return grid
 
+def ask_coordinates():
+    x, y = input("Coordonnée X :"), input("Coordonnées Y :")
+    return x, y
+
+def swap():
+    
