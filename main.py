@@ -21,7 +21,7 @@ def ask_coordinates():
 
 def swap(grid):
     candy_1 = ask_coordinates()
-    candy_2 = ask_coordinates
+    candy_2 = ask_coordinates()
     grid[candy_1[0]][candy_1[1]], grid[candy_2[0]][candy_2[1]] = grid[candy_2[0]][candy_2[1]], grid[candy_1[0]][candy_1[1]]
 
 
