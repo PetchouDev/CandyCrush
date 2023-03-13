@@ -72,6 +72,104 @@ def test_detecte_coordonnees_combinaison():
 Génération de la grille
 
 ```python
+def generer_grille(x, y):
+    """
+    Génère une grille de dimensions x*y, puis la remplie avec des bonbons aléatoires
+    """
+```
+
+Remplissage de la grille avec des bonbons aléatoires
+
+```python
+def remplir_grille(grille):
+    """
+    Rempli la grille avec des bonbons aléatoires
+    """
+```
+
+Affichage de la grille
+
+```python
+def affichage_grille(grille, nb_type_bonbons):  # voir les fonctions imposées
+    """
+    Affiche la grille de jeu "grille" contenant au
+    maximum "nb_type_bonbons" couleurs de bonbons différentes.
+    """
+```
+
+Demande du nombre maximal de coups et du score à atteindre
+
+```python
+def demander_parametres():
+    """
+    Demande le nombre maximal de coups et le score à atteindre
+    """
+```
+
+Coup du joueur
+
+```python
+def coup_joueur(grille):
+    """
+    Demande les coordonnées d'un bonbon
+    l'affiche en surbrillance
+    Demande les coordonnées d'un second bonbon
+    Si le second est adjacent au premier, les échange, sinon, le second mis en surbrillance, et le premier revient à sa couleur d'origine. Si le second est le même que le premier, on revient à l'étape 2.
+
+    En cas déchange:
+    Si une combinaison est formée, on supprime les bonbons de la combinaison
+
+    Tant que des combinaisons sont formées:
+        On applique la gravité
+        On remplit la grille avec des bonbons aléatoires
+    """
+```
+
+Echange de deux bonbons
+
+```python
+def echange_bonbons(grille, i1, j1, i2, j2):
+    """
+    Echange les bonbons aux coordonnées (i1, j1) et (i2, j2)
+    """
+```
+
+mise en surbrillance d'un bonbon
+
+```python
+def surbrillance_bonbon(grille, i, j):
+    """
+    Met en surbrillance le bonbon aux coordonnées (i, j)
+    """
+```
+
+Suppression des bonbons d'une combinaison
+
+```python
+def supprimer_bonbons(grille, combinaison):
+    """
+    Supprime les bonbons de la combinaison
+    """
+```
+
+Application de la gravité
+
+```python
+def appliquer_gravite(grille):
+    """
+    Applique la gravité à la grille
+    """
+```
+
+Verification de la fin de la partie
+
+```python
+def fin_partie(grille, nb_coups, score):
+    """
+    Vérifie si la partie est finie
+    """
+```
+
 
 
 
