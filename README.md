@@ -67,5 +67,11 @@ def test_detecte_coordonnees_combinaison():
     - Si le nombre de coups est épuisé, on affiche un message de défaite
     - Si le score est atteint, on affiche un message de victoire
 
+### Fonctions annexes
+
+Génération de la grille
+
+```python
+
 
 
