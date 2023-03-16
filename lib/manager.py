@@ -8,6 +8,23 @@ IMG_DIR = BASE_DIR / "assets" / "graphics"
 
 KEY = "CandyCrush"
 
+# obtenir le système d'exploitation
+system = None
+if os.name == "nt":
+    system = "windows"
+elif os.name == "posix":
+    system = "linux"
+
+# obtenir le chemin de sauvegarde
+if system == "windows":
+    SAVE_PATH = pathlib.Path(os.getenv("APPDATA")) / "3Mousquetaires" / "CandyCrush"
+
+elif system == "linux":
+    SAVE_PATH = pathlib.Path(os.getenv("HOME")) / "3Mousquetaires" / "CandyCrush"
+
+# créer le dossier de sauvegarde s'il n'existe pas
+if not os.path.exists(SAVE_PATH):
+    os.makedirs(SAVE_PATH, exist_ok=True)
 
 
 
@@ -16,7 +33,7 @@ def get_data_from_file() -> bytes:
     """
     Charge les données d'un fichier
     """
-    with open(DATA_DIR / "settings.psw", "rb") as file: # Ouverture du fichier en mode binaire
+    with open(SAVE_PATH / "settings.psw", "rb") as file: # Ouverture du fichier en mode binaire
         data = file.read() # Lecture des données
 
     return data
@@ -45,7 +62,7 @@ def write_data(data: dict) -> None:
     """
     Enregistre les données
     """
-    with open(DATA_DIR / "settings.psw", "wb") as file:
+    with open(SAVE_PATH / "settings.psw", "wb") as file:
         file.write(data)       # Ecriture des données
 
 def save_data(data: dict) -> None:
@@ -53,12 +70,12 @@ def save_data(data: dict) -> None:
     Enregistre les données
     """
     # créé le dossier s'il n'existe pas
-    if not os.path.exists(DATA_DIR):
-        os.makedirs(DATA_DIR)
+    if not os.path.exists(SAVE_PATH):
+        os.makedirs(SAVE_PATH, exist_ok=True)
     
     # créée le fichier s'il n'existe pas
-    if not os.path.exists(DATA_DIR / "settings.psw"):
-        with open(DATA_DIR / "settings.psw", "w") as file:
+    if not os.path.exists(SAVE_PATH / "settings.psw"):
+        with open(SAVE_PATH / "settings.psw", "w") as file:
             pass
         
     data = json.dumps(data)     # Conversion des données en chaîne de caractères
@@ -79,6 +96,8 @@ def load_manager():
     
 class Manager:
     def __init__(self):
+        if not self.check_existance():
+            self.init()
         self.data = get_data()
         
     def save(self):
@@ -87,26 +106,32 @@ class Manager:
     def get(self, key):
         return self.data.get(key)
     
+    def init(self):
+        # initialisation des données
+        self.data = {
+            "IMG_DIR": "default",
+            "MAX_WIDTH": 8,
+            "MAX_HEIGTH": 8,
+            "BEST_SCORE": 0,
+            "BUTTON_SIZE": 100,
+            "BG_COLOR": "#D778E3",
+            "SELECTED_COLOR": "#f4fc77",
+            "CANDY_BG": "#b1f6fc",
+            "LAST_PLAYED": [6, 6],
+        }
+
+        self.save()
+    
+    def check_existance(self):
+        if not os.path.exists(SAVE_PATH / "settings.psw"):
+            return False
+        return True
+
+
 MANAGER = Manager()
 
+
+
 if __name__ == "__main__":
-    # initialisation des données
-    data = {
-        "IMG_DIR": "default",
-        "MAX_WIDTH": 10,
-        "MAX_HEIGTH": 10,
-        "BEST_SCORE": 0,
-        "BUTTON_SIZE": 50,
-        "BG_COLOR": "#CCCCCC",
-        "SELECTED_COLOR": "#FFFFCC",
-        "CANDY_BG": "#FFFFFF",
-        "LAST_PLAYED": "6x6",
-    }
-
-    # Enregistrement des données
-    save_data(data)
-
-    # test de récupération des données
-    data2 = get_data()
-
-    print(data == data2) # True si le test passe
+    manager = Manager()
+    Manager().init()
