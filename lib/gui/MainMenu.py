@@ -2,8 +2,10 @@ import sys
 from tkinter import *
 from tkinter.ttk import Combobox
 
+from ..PIL import Image, ImageTk
+
 from lib.gui.Settings import open_settings
-from lib.manager import MANAGER
+from lib.manager import MANAGER, DEFAULT_IMG_DIR
 
 
 
@@ -18,6 +20,9 @@ class MainMenu(Tk):
         
         self.last_x = last_dimensions[0]
         self.last_y = last_dimensions[1]
+
+        # ajouter l'icon
+        self.wm_iconphoto(False, ImageTk.PhotoImage(Image.open(DEFAULT_IMG_DIR / "SuperCandy.png")))
 
         self.label = Label(self, text="Choisissez la taille de la grille")
         self.label.pack(pady=10)

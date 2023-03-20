@@ -19,9 +19,6 @@ def play():
     while replay:
         replay = False
 
-        if MANAGER.get("IMG_DIR") == "default":
-            MANAGER.data["IMG_DIR"] = os.path.join(os.path.dirname(__file__), "assets", "graphics")
-
         # obtenir les règles
         main = MainMenu(MANAGER.get("LAST_PLAYED"))
         x, y = main.ask_size()

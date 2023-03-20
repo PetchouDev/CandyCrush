@@ -4,7 +4,7 @@ import pathlib
 
 BASE_DIR = pathlib.Path(__file__).parent.parent
 DATA_DIR = BASE_DIR / "assets" / "data"
-IMG_DIR = BASE_DIR / "assets" / "graphics"
+DEFAULT_IMG_DIR = pathlib.Path(__file__).parent.parent / "assets" / "graphics"
 
 KEY = "CandyCrush"
 
@@ -99,9 +99,16 @@ class Manager:
         if not self.check_existance():
             self.init()
         self.data = get_data()
+
+        if self.data["IMG_DIR"] == "default":
+            self.data["IMG_DIR"] = DEFAULT_IMG_DIR
+
         
     def save(self):
-        save_data(self.data)
+        tmp = self.data.copy()
+        if self.data["IMG_DIR"] == DEFAULT_IMG_DIR:
+            tmp["IMG_DIR"] = "default"
+        save_data(tmp)
 
     def get(self, key):
         return self.data.get(key)
