@@ -1,15 +1,8 @@
-import os
-
-from lib.manager import load_manager, MANAGER
-from lib.core import handle_error
+from lib.manager import MANAGER
 from lib.rules import *
 from lib.gui.MainMenu import MainMenu
 from lib.gui.EndScreen import EndScreen
 from lib.gui.MainApp import Game
-
-
-
-
 
 
 def play():
@@ -36,6 +29,7 @@ def play():
             MANAGER.save()
 
         replay = EndScreen(score).show_result()
+
 
 if __name__ == '__main__':
     play()

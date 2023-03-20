@@ -2,7 +2,7 @@ import sys
 from tkinter import *
 from tkinter.ttk import Combobox
 
-from ..PIL import Image, ImageTk
+from PIL import Image, ImageTk
 
 from lib.gui.Settings import open_settings
 from lib.manager import MANAGER, DEFAULT_IMG_DIR

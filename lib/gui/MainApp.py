@@ -4,7 +4,7 @@ import random
 import time
 from tkinter import *
 
-from lib.PIL import Image, ImageTk
+from PIL import Image, ImageTk
 
 from lib.gui.Candy import Candy
 from lib.gui.Settings import open_settings
