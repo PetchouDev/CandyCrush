@@ -17,7 +17,7 @@ options = [
     "--noconsole",
     "--icon=assets/graphics/SuperCandy.ico",
     "--name=CandyCrush",
-    "--add-data=assets/graphics;assets/graphics",
+    "--add-data=assets;assets",
     "--add-data=lib;lib",
     "--hidden-import=PIL",
     "--collect-submodules=PIL",
