@@ -186,6 +186,9 @@ def fin_partie(grille, nb_coups, score):
     """
 ```
 
+# Notes
+Le projet est terminé, ce qui signifie que je ne vais probablement 
+plus le modifier. Si vous avez des remarques, n'hésitez pas à me les faire parvenir.
 
 
 
