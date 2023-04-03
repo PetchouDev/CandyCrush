@@ -7,12 +7,12 @@ from tkinter import *
 from PIL import Image, ImageTk
 
 from lib.gui.Candy import Candy
-from lib.gui.Settings import open_settings
-from lib.manager import MANAGER
+from lib.manager import MANAGER, DEFAULT_IMG_DIR
 
 
 class Game(Tk):
     def __init__(self, x, y, rule):
+        """Initialisation de la fenêtre"""
         super().__init__()
 
         # quitter par la croix
@@ -22,7 +22,17 @@ class Game(Tk):
         # Créer la fenêtre principale
         self.title("CandyCrush")
 
+        # appliquation du theme
+        self.theme = "LIGTH"
+        theme_path = DEFAULT_IMG_DIR.parent / "engine" 
+        self.tk.call("source", theme_path / "theme.tcl")
+        self.tk.call("set_theme", self.theme.lower())
+
+        # Règle du jeu à utiliser
         self.rule = rule
+
+        # autoriser les interactions avec la fenêtre
+        self.enabled = False # désactivé par défaut
 
         # Créer la grille de boutons, avec une couleur d'arrière-plan
         self.grid = Frame(self)
@@ -30,27 +40,34 @@ class Game(Tk):
         self.grid.configure(bg=MANAGER.get("BG_COLOR"))
         self.configure(bg=MANAGER.get("BG_COLOR"))
 
+        # Créer un dictionnaire pour stocker les boutons
         self.candies = {}
 
+        # Créer une liste pour stocker les bonbons à supprimer
         self.matches = []
 
+
+        # initialiser le score
         self.score = 0
 
+        # initialiser la taille de la grille
         self.x = x
         self.y = y
 
+        # récupérer le meilleur score
         self.best = MANAGER.get("BEST_SCORE")
 
+        # gestion du bonbon sélectionné
         self.selected = False # aucun bonbon sélectionné
 
-        # Créer chaque bouton
+        # Créer un bonbon dans chaque case de la grille
         for i in range(x):
             for j in range(y):
                 self.spawn_candy(i, j)
 
 
 
-
+        # Créer les labels pour le score et le meilleur score
         self.score_label = Label(self, text=f"Score: {self.score}", font=("Helvetica", 16), background=MANAGER.get("BG_COLOR"))
         self.score_label.pack(side=LEFT, padx=20)
 
@@ -73,11 +90,18 @@ class Game(Tk):
         # petit délai pour que l'utilisateur puisse voir les bonbons
         time.sleep(1)
 
-            # Vérifier si il y a des combinaisons
+        # Vérifier si il y a des combinaisons
         self.run()
 
+        # Activer les interactions avec la fenêtre
+        self.enabled = True
+
     def spawn_candy(self, x, y):
+        """Créer un bonbon dans la case (x, y)"""
+
+        # Choisir un type de bonbon aléatoire
         type = random.randint(1, 5)
+
         # Charger l'image pour le bouton
         image = Image.open(os.path.join(MANAGER.get('IMG_DIR'), f"Candy{type}.png"))
         btn_size = MANAGER.get("BUTTON_SIZE")
@@ -95,6 +119,7 @@ class Game(Tk):
         self.candies[(x, y)].grid(row=y, column=x)
 
     def play(self):
+        """Jouer une partie"""
         self.mainloop()
         return self.score
 
@@ -111,10 +136,12 @@ class Game(Tk):
         candy1.x, candy1.y, candy2.x, candy2.y = candy2.x, candy2.y, candy1.x, candy1.y
 
     def check_matches(self):
+        """Vérifier si il y a des combinaisons de bonbons"""
         self.matches = self.rule(self.candies)
 
     def delete_matches(self):
-        print(self.matches)
+        """Supprimer les bonbons qui sont dans la liste self.matches"""
+
         for c in self.matches:
             self.candies[c].destroy()
             del self.candies[c]
@@ -122,6 +149,11 @@ class Game(Tk):
         self.score += len(self.matches)
 
         self.score_label.configure(text=f"Score: {self.score}")
+
+        if self.score > self.best:
+            self.best = self.score
+            self.best_label.configure(text=f"Meilleur score: {self.best}")
+            MANAGER.set("BEST_SCORE", self.best)
 
         self.update()
 
@@ -139,7 +171,6 @@ class Game(Tk):
             moved = True
             rows = list(range(0, self.y-1))
             rows = rows[::-1]
-            print(rows)
             while moved:
                 moved = False
                 for j in rows:
@@ -154,6 +185,7 @@ class Game(Tk):
                     time.sleep(0.01)
 
     def fill(self):
+        """Remplir les cases vides avec des bonbons"""
         for i in range(self.x):
             for j in range(self.y):
                 if (i, j) not in self.candies:
@@ -191,7 +223,7 @@ class Game(Tk):
             time.sleep(1.5)
             self.destroy()
 
-    def click_handler(self, candy):
+    def click_handler(self, candy: Candy):
         # import des couleurs
         SELECTED_COLOR = MANAGER.get("CANDY_SELECTED")
         CANDY_BG = MANAGER.get("CANDY_BG")
@@ -220,9 +252,8 @@ class Game(Tk):
 
 
                 if (self.selected.x, self.selected.y) in neiboors:
-                    print("VOISIN !")
                     try:
-                        self.selected.configure(bg=CANDY_BG)
+                        self.selected.change_color(CANDY_BG)
                     except:
                         pass
 
@@ -239,18 +270,23 @@ class Game(Tk):
                     if res == []:
                         # si il n'y a pas de bonbons à supprimer, ne rien faire et déselectionner les bonbons
                         try:
-                            self.selected.configure(bg=CANDY_BG)
+                            self.selected.change_color(CANDY_BG)
                         except:
                             pass
                         self.selected = False
                         return False
                         
                     else:
+                        # si il y a des bonbons à supprimer, les supprimer et déselectionner les bonbons (gestion des erreurs pour éviter les bugs)
                         self.swap(self.selected, candy)
                         self.run()
                         self.update()
                         try:
-                            self.selected.change_color(bg=CANDY_BG)
+                            self.selected.change_color(CANDY_BG)
+                        except:
+                            pass
+                        try :
+                            candy.change_color(CANDY_BG)
                         except:
                             pass
                         self.selected = False
@@ -259,7 +295,6 @@ class Game(Tk):
 
                 # si le bonbon sélectionné n'est pas à côté du bonbon sur lequel on a cliqué, sélectionner le bonbon sur lequel on a cliqué
                 else:
-                    print("PAS VOISIN !")
                     try:
                         self.selected.change_color(CANDY_BG)
                     except:
@@ -268,10 +303,12 @@ class Game(Tk):
                     candy.selected = True
                     return True
 
-
-
     def run(self):
         """Supprime les combinaisons, puis remplis la grille"""
+
+        # désactive les interactions avec la grille pour limiter les erreurs
+        self.enabled = False
+
         run = True
         while run:
             self.check_matches()
@@ -289,6 +326,13 @@ class Game(Tk):
 
             if self.matches == []:
                 run = False
+
+                # appliquer à tous les bonbons la couleur par défaut
+                for c in self.candies.keys():
+                    self.candies[c].change_color(MANAGER.get("CANDY_BG"))
             
         self.can_move()
+
+        # réactive les interactions avec la grille
+        self.enabled = True
 

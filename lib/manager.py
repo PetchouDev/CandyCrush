@@ -2,10 +2,12 @@ import os
 import json
 import pathlib
 
+# gestion des valeurs par défaut
 BASE_DIR = pathlib.Path(__file__).parent.parent
 DATA_DIR = BASE_DIR / "assets" / "data"
 DEFAULT_IMG_DIR = pathlib.Path(__file__).parent.parent / "assets" / "graphics"
 
+# clé de chiffrement/déchiffrement
 KEY = "CandyCrush"
 
 # obtenir le système d'exploitation
@@ -28,7 +30,7 @@ if not os.path.exists(SAVE_PATH):
 
 
 
-
+# charger les données depuis le fichier
 def get_data_from_file() -> bytes:
     """
     Charge les données d'un fichier
@@ -38,6 +40,7 @@ def get_data_from_file() -> bytes:
 
     return data
 
+# chiffre/déchiffre les données
 def xor_data(data: bytes) -> bytes:
     """
     Chiffre ou déchiffre les données
@@ -48,6 +51,7 @@ def xor_data(data: bytes) -> bytes:
 
     return bytes(data)
 
+# charge les données
 def get_data() -> dict:
     """
     Charge les données
@@ -58,6 +62,7 @@ def get_data() -> dict:
 
     return data
 
+# exporte  les données
 def write_data(data: dict) -> None:
     """
     Enregistre les données
@@ -65,6 +70,7 @@ def write_data(data: dict) -> None:
     with open(SAVE_PATH / "settings.psw", "wb") as file:
         file.write(data)       # Ecriture des données
 
+# enregistre les données
 def save_data(data: dict) -> None:
     """
     Enregistre les données
@@ -101,22 +107,26 @@ class Manager:
         self.data = get_data()
 
         if self.data["IMG_DIR"] == "default":
-            self.data["IMG_DIR"] = DEFAULT_IMG_DIR
+            self.data["IMG_DIR"] = str(DEFAULT_IMG_DIR)
 
         
     def save(self):
         tmp = self.data.copy()
-        if self.data["IMG_DIR"] == DEFAULT_IMG_DIR:
+        if self.data["IMG_DIR"] == str(DEFAULT_IMG_DIR):
             tmp["IMG_DIR"] = "default"
         save_data(tmp)
 
     def get(self, key):
         return self.data.get(key)
     
+    def set(self, key, value):
+        self.data[key] = value
+        self.save()
+    
     def init(self):
         # initialisation des données
         self.data = {
-            "IMG_DIR": "default",
+            "IMG_DIR": str(DEFAULT_IMG_DIR),
             "MAX_WIDTH": 8,
             "MAX_HEIGTH": 8,
             "BEST_SCORE": 0,
@@ -124,7 +134,8 @@ class Manager:
             "BG_COLOR": "#D778E3",
             "SELECTED_COLOR": "#f4fc77",
             "CANDY_BG": "#b1f6fc",
-            "LAST_PLAYED": [6, 6],
+            "LAST_PLAYED": [6, 6, 1],
+            "THEME": "Dark",
         }
 
         self.save()
@@ -141,4 +152,19 @@ MANAGER = Manager()
 
 if __name__ == "__main__":
     manager = Manager()
-    Manager().init()
+    manager.init()
+
+    # vérifier que les données sont bien enregistrées
+    print(manager.data)
+
+    test = manager.data.copy()
+
+    # charger les données
+    manager.__init__()
+
+    print(manager.data)
+
+    # vérifier que les données sont bien chargées
+    print(manager.data == test)
+
+

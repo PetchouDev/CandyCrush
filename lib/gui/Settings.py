@@ -1,17 +1,17 @@
 import os
 from tkinter import *
+from tkinter.ttk import *
 
-from ..manager import MANAGER
+from ..manager import MANAGER, DEFAULT_IMG_DIR
 from ..core import handle_error
 
-
+# fenêtre de paramètres
 class Settings(Tk):
     def __init__(self):
+
+        # initialisation de la fenêtre
         super().__init__()
         self.title("Candy Crush - settings")
-        self.geometry("375x450")
-
-        #self.resizable(False, False)
 
         self.label = Label(self, text="Paramètres")
 
@@ -20,6 +20,12 @@ class Settings(Tk):
 
         # mettre le titre de la fenêtre en gras
         self.label.config(font=("Arial", 20, "bold"))
+
+        # appliquation du theme
+        self.theme = MANAGER.get("THEME")
+        theme_path = DEFAULT_IMG_DIR.parent / "engine" 
+        self.tk.call("source", theme_path / "theme.tcl")
+        self.tk.call("set_theme", self.theme.lower())
 
         # entrée nombre pour la dimension maximale de la grille
         self.max_width = Entry(self)
@@ -60,7 +66,7 @@ class Settings(Tk):
         self.resources_label = Label(self, text="Chemin des ressources")
 
 
-        # affichage des options
+        # affichage des options (placement dans la fenetre)
         self.max_width_label.grid(row=1, column=0, padx=10, pady=10)
         self.max_width.grid(row=1, column=1, padx=10, pady=10)
 
@@ -82,14 +88,25 @@ class Settings(Tk):
         self.resources_label.grid(row=7, column=0, padx=10, pady=10)
         self.resources.grid(row=7, column=1, padx=10, pady=10)
 
+        # theme settings
+        self.theme = StringVar(self)
+        self.theme.set(MANAGER.get("THEME"))
+        self.theme_label = Label(self, text="Thème")
+
+        self.theme_label.grid(row=8, column=0, padx=10, pady=10)
+        self.theme_menu = Combobox(self, textvariable=self.theme, values=["Dark", "Light"])
+        self.theme_menu.grid(row=8, column=1, padx=10, pady=10)
+
 
         # bouton pour appliquer les changements
         self.button = Button(self, text="Appliquer", command=self.apply)
-        self.button.grid(row=8, column=0, columnspan=2, pady=10)
+        self.button.grid(row=9, column=0, columnspan=2, pady=10)
 
 
     def apply(self):
+        """Appliquer les changements"""
         try:
+            # récupérer les valeurs des entrées
             tmp_max_width = int(self.max_width.get())
             tmp_max_height = int(self.max_heigth.get())
 
@@ -100,6 +117,7 @@ class Settings(Tk):
             tmp_candy_bg = self.candy_bg.get()
 
             tmp_ressources_path = self.resources.get()
+            tmp_theme = self.theme.get()
 
             # vérifer si le chemin des ressources est valide et si il contient Candy[1-5]
             if os.path.exists(tmp_ressources_path):
@@ -111,6 +129,7 @@ class Settings(Tk):
                         raise ValueError("Le dossier ne contient pas les ressources nécessaires.")
                     
                     else :
+                        # sauvegarder les changements
                         MANAGER.data["IMG_DIR"] = tmp_ressources_path
                         MANAGER.data["MAX_WIDTH"] = tmp_max_width
                         MANAGER.data["MAX_HEIGTH"] = tmp_max_height
@@ -118,6 +137,7 @@ class Settings(Tk):
                         MANAGER.data["BG_COLOR"] = tmp_bg_color
                         MANAGER.data["SELECTED_COLOR"] = tmp_selected_color
                         MANAGER.data["CANDY_BG"] = tmp_candy_bg
+                        MANAGER.data["THEME"] = 'Light' if tmp_theme == "Light" else "Dark"
 
                         MANAGER.save()
                     
@@ -126,6 +146,7 @@ class Settings(Tk):
 
 
         except Exception as e:
+            # si une erreur est survenue, afficher un message d'erreur et restaurer les valeurs par défaut
             class error_details:
                 def __init__(self, error, message):
                     self.error = error

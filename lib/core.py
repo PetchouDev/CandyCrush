@@ -1,40 +1,18 @@
 import sys
 from tkinter import *
 
-class Color:
-    _blue = '\033[94m'
-    _green = '\033[92m'
-    _yellow = '\033[93m'
-    _red = '\033[91m'
-    _purple = '\033[95m'
-    _cyan = '\033[96m'
-    
-    end = '\033[0m'
-
-    white_bg = '\033[107m'
-
-    colors = {"blue": _blue, "green": _green, "yellow": _yellow, "red": _red, "purple": _purple}
-
-    def all(self):
-        return [c for c in self.colors.keys()]
-
-def colored(text, color, bg=False):
-    if bg:
-        res =  Color.colors[color] + Color.white_bg + text + Color.end
-    else: 
-        res = Color.colors[color] + text + Color.end
-    return res
-    
-
+# affichage des messages d'erreur
 def handle_error(log: Exception):
-    """Affiche le log d'erreur"""    
+    """Affiche le log d'erreur"""
+    # crée la fenêtre    
     root = Tk()
     root.title("Candy Crush")
-    # placer au centre de l'écran
-    root.update_idletasks()
+
+    # gestiion de la taille de la fenêtre
     x = (root.winfo_screenwidth() - root.winfo_reqwidth()) / 2
     y = (root.winfo_screenheight() - root.winfo_reqheight()) / 2
     root.geometry("+%d+%d" % (x, y))
+
     # afficher une erreur
     l1 = Label(root, text="Une erreur est survenue.").pack(pady=10)
     l2 = Label(root, text=log).pack(pady=10)
@@ -42,6 +20,8 @@ def handle_error(log: Exception):
     # détails sous forme type ValueError: invalid literal for int() with base 10: 'a' et un boutton détails
     ErrorType = type(log).__name__
     ErrorDetails = str(log)
+
+    # affichage des détails
     def show_details():
         details = Toplevel()
         details.title("Détails de l'erreur")
