@@ -62,6 +62,9 @@ class EndScreen(Tk):
         self.quitButton = Button(self, text="Quitter", font=("Arial", 20), command=self.exit_game)
         self.quitButton.pack(pady=10)
 
+        # ajouter des marges
+        self.minsize(350, 300)
+
         # taille de la fenêtre
         self.resizable(False, False)
 
